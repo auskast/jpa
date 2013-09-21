@@ -5,7 +5,7 @@ import info.dyndns.pfitz.jpaexamples.model.Author;
 import java.util.List;
 
 public interface AuthorDao {
-    public Integer save(Author author);
+    public <S extends Author> S save(S author);
 
     public Author findById(Integer id);
 
@@ -13,5 +13,5 @@ public interface AuthorDao {
 
     public List<Author> getAll();
 
-    public void delete(Author author);
+    public <S extends Author> void delete(S author);
 }
