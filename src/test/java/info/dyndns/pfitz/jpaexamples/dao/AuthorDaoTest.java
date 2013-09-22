@@ -19,7 +19,7 @@ public class AuthorDaoTest extends AbstractTestNGSpringContextTests {
 
     @Test
     public void testSave() throws Exception {
-        final Author author = authorDao.save(createAuthor(null, "Kendra", "Fitzgerald"));
+        final Author author = authorDao.save(new Author("Kendra", "Fitzgerald"));
         assertNotNull(author.getId());
         assertEquals(author.getId(), Integer.valueOf(1));
     }
@@ -29,24 +29,20 @@ public class AuthorDaoTest extends AbstractTestNGSpringContextTests {
         final Author original = authorDao.findById(1);
         original.setFirstName("Patrick");
         final Author result = authorDao.save(original);
-        assertEquals(result, createAuthor(1, "Patrick", "Fitzgerald"));
+        assertEquals(result, original);
     }
 
     @Test(dependsOnMethods = "testSaveAgain")
     public void testFindById() throws Exception {
         final Author author = authorDao.findById(1);
-        assertNotNull(author);
-        assertEquals(author.getId(), Integer.valueOf(1));
-        assertEquals(author.getFirstName(), "Patrick");
-        assertEquals(author.getLastName(), "Fitzgerald");
+        assertEquals(author, createAuthor(1, "Patrick", "Fitzgerald"));
     }
 
     @Test(dependsOnMethods = "testSaveAgain")
     public void testFindByLastName() throws Exception {
-        authorDao.save(createAuthor(null, "Esther", "Lee"));
-        authorDao.save(createAuthor(null, "Karen", "Fitzgerald"));
+        authorDao.save(new Author("Esther", "Lee"));
+        authorDao.save(new Author("Karen", "Fitzgerald"));
         final List<Author> authors = authorDao.findByLastName("Fitzgerald");
-        assertNotNull(authors);
         assertEquals(authors, newArrayList(
                 createAuthor(1, "Patrick", "Fitzgerald"),
                 createAuthor(3, "Karen", "Fitzgerald")
@@ -56,7 +52,6 @@ public class AuthorDaoTest extends AbstractTestNGSpringContextTests {
     @Test(dependsOnMethods = "testFindByLastName")
     public void testGetAll() throws Exception {
         final List<Author> authors = authorDao.getAll();
-        assertNotNull(authors);
         assertEquals(authors, newArrayList(
                 createAuthor(1, "Patrick", "Fitzgerald"),
                 createAuthor(2, "Esther", "Lee"),
@@ -70,16 +65,12 @@ public class AuthorDaoTest extends AbstractTestNGSpringContextTests {
         for (final Author author : authors) {
             authorDao.delete(author);
         }
-        assertEquals(authorDao.getAll(), newArrayList(
-                createAuthor(2, "Esther", "Lee")
-        ));
+        assertEquals(authorDao.getAll(), newArrayList(createAuthor(2, "Esther", "Lee")));
     }
 
     private Author createAuthor(Integer id, String firstName, String lastName) {
-        final Author author = new Author();
+        final Author author = new Author(firstName, lastName);
         author.setId(id);
-        author.setFirstName(firstName);
-        author.setLastName(lastName);
 
         return author;
     }

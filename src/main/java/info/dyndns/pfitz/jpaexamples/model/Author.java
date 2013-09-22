@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Table(name = "authors")
 @NamedQueries({
         @NamedQuery(name = "findByLastName", query = "from Author where last_name = :lastName"),
-        @NamedQuery(name = "getAll", query = "from Author")
+        @NamedQuery(name = "getAllAuthors", query = "from Author")
 })
 public class Author {
     @Id
@@ -29,6 +29,18 @@ public class Author {
 
     @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
+
+    public Author() {
+    }
+
+    public Author(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 
     public Integer getId() {
         return id;
@@ -55,25 +67,25 @@ public class Author {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Author)) return false;
-        final Author author = (Author) o;
+    public int hashCode() {
+        int hashCode = id == null ? 0 : id.hashCode();
 
-        if (id != null ? !id.equals(author.id) : author.id == null) return false;
-        if (firstName != null ? !firstName.equals(author.firstName) : author.firstName == null) return false;
-        if (lastName != null ? !lastName.equals(author.lastName) : author.lastName == null) return false;
+        hashCode = 31 * hashCode + (firstName == null ? 0 : firstName.hashCode());
+        hashCode = 31 * hashCode + (lastName == null ? 0 : lastName.hashCode());
 
-        return true;
+        return hashCode;
     }
 
     @Override
-    public int hashCode() {
-        int hashCode = id.hashCode();
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof Author)) return false;
+        final Author author = (Author) o;
 
-        hashCode = 31 * hashCode + firstName.hashCode();
-        hashCode = 31 * hashCode + lastName.hashCode();
+        if (id != null ? !id.equals(author.id) : author.id != null) return false;
+        if (firstName != null ? !firstName.equals(author.firstName) : author.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(author.lastName) : author.lastName != null) return false;
 
-        return hashCode;
+        return true;
     }
 
     @Override

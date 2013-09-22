@@ -6,7 +6,7 @@ import info.dyndns.pfitz.jpaexamples.model.Book;
 import java.util.List;
 
 public interface BookDao {
-    public String save(Book book);
+    public <S extends Book> S save(S book);
 
     public Book findByIsbn(String isbn);
 
@@ -15,4 +15,6 @@ public interface BookDao {
     public List<Book> findByAuthor(Author author);
 
     public List<Book> getAll();
+
+    public <S extends Book> void delete(S book);
 }

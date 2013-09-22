@@ -39,7 +39,7 @@ public class AuthorDaoJpaImpl implements AuthorDao {
 
     @Override
     public List<Author> getAll() {
-        return entityManager.createNamedQuery("getAll", Author.class).getResultList();
+        return entityManager.createNamedQuery("getAllAuthors", Author.class).getResultList();
     }
 
     @Override
