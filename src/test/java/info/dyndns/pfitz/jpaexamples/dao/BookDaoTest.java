@@ -70,6 +70,12 @@ public class BookDaoTest extends AbstractTestNGSpringContextTests {
         ));
     }
 
+    @Test(dependsOnMethods = "testGetAll")
+    public void testDelete() throws Exception {
+        bookDao.delete(bookDao.findByIsbn("ABC-123"));
+        assertEquals(bookDao.getAll().size(), 2);
+    }
+
     private Author createAuthor(Integer id, String firstName, String lastName) {
         final Author author = new Author(firstName, lastName);
         author.setId(id);
