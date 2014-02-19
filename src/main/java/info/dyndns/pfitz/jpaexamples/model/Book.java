@@ -1,18 +1,8 @@
 package info.dyndns.pfitz.jpaexamples.model;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import com.google.common.base.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +13,7 @@ import static com.google.common.collect.Lists.newArrayList;
 @NamedQueries({
         @NamedQuery(name = "findByIsbn", query = "from Book where isbn = :isbn"),
         @NamedQuery(name = "findByTitle", query = "from Book where title = :title"),
-        @NamedQuery(name = "findByAuthor", query = "select book from Book book join fetch book.authors author where author = :author"),
+        @NamedQuery(name = "findByAuthor", query = "from Book book join fetch book.authors author where author = :author"),
         @NamedQuery(name = "getAllBooks", query = "from Book")
 })
 public class Book {
@@ -132,15 +122,7 @@ public class Book {
 
     @Override
     public int hashCode() {
-        int hashCode = isbn == null ? 0 : isbn.hashCode();
-
-        hashCode = 31 * hashCode + (title == null ? 0 : title.hashCode());
-        hashCode = 31 * hashCode + (authors == null ? 0 : authors.hashCode());
-        hashCode = 31 * hashCode + (description == null ? 0 : description.hashCode());
-        hashCode = 31 * hashCode + (pages == null ? 0 : pages.hashCode());
-        hashCode = 31 * hashCode + (publishDate == null ? 0 : publishDate.hashCode());
-
-        return hashCode;
+        return Objects.hashCode(isbn, title, authors, description, pages, publishDate);
     }
 
     @Override
@@ -148,18 +130,24 @@ public class Book {
         if (o == null || !(o instanceof Book)) return false;
         final Book book = (Book) o;
 
-        if (isbn != null ? !isbn.equals(book.isbn) : book.isbn != null) return false;
-        if (title != null ? !title.equals(book.title) : book.title != null) return false;
-        if (authors != null ? !(authors.containsAll(book.authors) && book.authors.containsAll(authors)) : book.authors != null) return false;
-        if (description != null ? !description.equals(book.description) : book.description != null) return false;
-        if (pages != null ? !pages.equals(book.pages) : book.pages != null) return false;
-        if (publishDate != null ? !publishDate.equals(book.publishDate) : book.publishDate != null) return false;
-
-        return true;
+        return Objects.equal(isbn, book.isbn) &&
+                Objects.equal(title, book.title) &&
+                authors.containsAll(book.authors) &&
+                book.authors.containsAll(authors) &&
+                Objects.equal(description, book.description) &&
+                Objects.equal(pages, book.pages) &&
+                Objects.equal(publishDate, book.publishDate);
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Objects.toStringHelper(this)
+                .add("isbn", isbn)
+                .add("title", title)
+                .add("authors", authors)
+                .add("description", description)
+                .add("pages", pages)
+                .add("publishDate", publishDate)
+                .toString();
     }
 }

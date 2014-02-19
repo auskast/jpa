@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="jpa-examples" verbose="1" thread-count="1">
-    <test name="dao" enabled="false">
+<suite name="jpa-examples" verbose="1" thread-count="5">
+    <test name="dao">
         <packages>
             <package name="info.dyndns.pfitz.jpaexamples.dao"/>
         </packages>

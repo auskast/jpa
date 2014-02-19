@@ -1,16 +1,8 @@
 package info.dyndns.pfitz.jpaexamples.model;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import com.google.common.base.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "authors")
@@ -68,12 +60,7 @@ public class Author {
 
     @Override
     public int hashCode() {
-        int hashCode = id == null ? 0 : id.hashCode();
-
-        hashCode = 31 * hashCode + (firstName == null ? 0 : firstName.hashCode());
-        hashCode = 31 * hashCode + (lastName == null ? 0 : lastName.hashCode());
-
-        return hashCode;
+        return Objects.hashCode(id, firstName, lastName);
     }
 
     @Override
@@ -81,15 +68,17 @@ public class Author {
         if (o == null || !(o instanceof Author)) return false;
         final Author author = (Author) o;
 
-        if (id != null ? !id.equals(author.id) : author.id != null) return false;
-        if (firstName != null ? !firstName.equals(author.firstName) : author.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(author.lastName) : author.lastName != null) return false;
-
-        return true;
+        return Objects.equal(id, author.id) &&
+                Objects.equal(firstName, author.firstName) &&
+                Objects.equal(lastName, author.lastName);
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return Objects.toStringHelper(this)
+                .add("id", id)
+                .add("firstName", firstName)
+                .add("lastName", lastName)
+                .toString();
     }
 }

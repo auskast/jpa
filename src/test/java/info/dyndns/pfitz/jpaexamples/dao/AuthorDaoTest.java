@@ -1,6 +1,7 @@
 package info.dyndns.pfitz.jpaexamples.dao;
 
 import info.dyndns.pfitz.jpaexamples.model.Author;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
@@ -12,7 +13,8 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
-@ContextConfiguration(locations = "classpath:context.xml")
+@ContextConfiguration(locations = "/context.xml")
+@DirtiesContext
 public class AuthorDaoTest extends AbstractTestNGSpringContextTests {
     @Resource
     private AuthorDao authorDao;

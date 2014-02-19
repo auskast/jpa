@@ -2,6 +2,7 @@ package info.dyndns.pfitz.jpaexamples.dao;
 
 import info.dyndns.pfitz.jpaexamples.model.Author;
 import info.dyndns.pfitz.jpaexamples.model.Book;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
@@ -13,7 +14,8 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 import static org.testng.Assert.assertEquals;
 
-@ContextConfiguration(locations = "classpath:context.xml")
+@ContextConfiguration(locations = "/context.xml")
+@DirtiesContext
 public class BookDaoTest extends AbstractTestNGSpringContextTests {
     @Resource
     private BookDao bookDao;
